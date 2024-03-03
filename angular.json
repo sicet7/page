@@ -33,7 +33,9 @@
                         "styles": [
                             "src/styles.less"
                         ],
-                        "scripts": []
+                        "scripts": [
+                            "wasm_exec.js"
+                        ]
                     },
                     "configurations": {
                         "production": {
