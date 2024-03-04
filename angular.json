@@ -33,7 +33,10 @@
                         "styles": [
                             "src/styles.less"
                         ],
-                        "scripts": []
+                        "scripts": [
+                            "wasm_exec.js",
+                            "node_modules/preline/preline.js"
+                        ]
                     },
                     "configurations": {
                         "production": {
