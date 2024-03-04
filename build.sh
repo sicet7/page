@@ -2,7 +2,7 @@
 
 set -e
 
-cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" .
+sh ./build-wasm.sh
 
 npm ci
 npm run build -- --configuration production

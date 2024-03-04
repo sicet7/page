@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {EncryptionService} from "@services/encryption.service";
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'sicet7';
+  constructor(@Inject(EncryptionService) private service: EncryptionService) {
+      this.service.encrypt("test", "test123").then((res) => {
+          console.log(res)
+      }).catch((err) => {
+          console.error(err)
+      })
+  }
 }
