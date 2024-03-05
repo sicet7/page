@@ -8,7 +8,7 @@ import (
 	"math/rand"
 )
 
-func GetSeededRandomString(seedString string, length int) (string, error) {
+func Get(seedString string, length int) (string, error) {
 	h := sha256.New()
 	_, err := io.WriteString(h, seedString)
 	if err != nil {
