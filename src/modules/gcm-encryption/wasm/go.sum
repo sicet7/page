@@ -1,0 +1,4 @@
+github.com/sicet7/go-modules/encryption/gcm v0.0.0-20240305141830-5dfcf5728c49 h1:FslCb3nAydLHcyI3nxY8yYAabqVYqmrAqNkHUaNuWD0=
+github.com/sicet7/go-modules/encryption/gcm v0.0.0-20240305141830-5dfcf5728c49/go.mod h1:6tRUzzWWQm7vbPB6KwW2aeUSNY0PkqdzdBlzHbX+Iqc=
+github.com/sicet7/go-modules/rand v0.0.0-20240305141830-5dfcf5728c49 h1:GC95IG/WMPkPw6NxD60ffqgpFfmrDSKIwTe4yt++9Mg=
+github.com/sicet7/go-modules/rand v0.0.0-20240305141830-5dfcf5728c49/go.mod h1:Zyeon8Jk84XHWTCE5gAGoWoT+vGnHKTO3gztRXOo6ns=

@@ -1,95 +1,34 @@
 package main
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
-	"crypto/sha256"
-	"encoding/base64"
-	"encoding/binary"
 	"fmt"
-	"io"
-	mathRand "math/rand"
+	gcmEncryption "github.com/sicet7/go-modules/encryption/gcm"
+	"github.com/sicet7/go-modules/rand"
 	"syscall/js"
 )
 
-func getSeededRandomString(seedString string, length int) (string, error) {
-	h := sha256.New()
-	_, err := io.WriteString(h, seedString)
-	if err != nil {
-		return "", err
-	}
-	seed := binary.BigEndian.Uint64(h.Sum(nil))
-	myRand := mathRand.New(mathRand.NewSource(int64(seed)))
-	output := ""
-	var buffer []byte
-	for len(output) < length {
-		buffer = make([]byte, 32)
-		_, err = myRand.Read(buffer)
-		if err != nil {
-			return "", err
-		}
-		output = output + base64.URLEncoding.EncodeToString(buffer)
-	}
-	return output[:length], nil
-}
-
 func encrypt(data string, password string) (string, error) {
-	keyString, err := getSeededRandomString(password, 32)
+	keyString, err := rand.GetSeededRandomString(password, 32)
 	if err != nil {
 		return "", err
 	}
 	key := []byte(keyString)
-	plaintext := []byte(data)
 
-	block, err1 := aes.NewCipher(key)
-	if err1 != nil {
-		return "", err1
-	}
-
-	nonce := make([]byte, 12)
-	if _, err2 := io.ReadFull(rand.Reader, nonce); err2 != nil {
-		return "", err2
-	}
-
-	aesgcm, err3 := cipher.NewGCM(block)
-	if err3 != nil {
-		return "", err3
-	}
-
-	ciphertext := aesgcm.Seal(nil, nonce, plaintext, nil)
-	return base64.URLEncoding.EncodeToString(append(nonce, ciphertext...)), nil
+	return gcmEncryption.EncryptString([]byte(data), key)
 }
 
 func decrypt(data string, password string) (string, error) {
-	bytes, err := base64.URLEncoding.DecodeString(data)
-	if err != nil {
-		return "", err
-	}
-	nonce := bytes[:12]
-	ciphertext := bytes[12:]
-
-	keyString, err1 := getSeededRandomString(password, 32)
+	keyString, err1 := rand.GetSeededRandomString(password, 32)
 	if err1 != nil {
 		return "", err1
 	}
 	key := []byte(keyString)
 
-	block, err2 := aes.NewCipher(key)
+	bytes, err2 := gcmEncryption.DecryptString(data, key)
 	if err2 != nil {
 		return "", err2
 	}
-
-	aesgcm, err3 := cipher.NewGCM(block)
-	if err3 != nil {
-		return "", err3
-	}
-
-	plaintext, err4 := aesgcm.Open(nil, nonce, ciphertext, nil)
-	if err4 != nil {
-		return "", err4
-	}
-	return string(plaintext), nil
+	return string(bytes), nil
 }
 
 func jsEncrypt() js.Func {

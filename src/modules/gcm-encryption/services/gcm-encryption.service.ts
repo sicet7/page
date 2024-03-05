@@ -1,13 +1,15 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 type CryptoFunction = (data: string, password: string) => Promise<string>;
 
-@Injectable({
-    providedIn: 'root'
-})
-export class EncryptionService {
+@Injectable()
+export class GcmEncryptionService {
     private suite: { encrypt: CryptoFunction, decrypt: CryptoFunction }|null = null;
     private loading: boolean = false;
+
+    public constructor(@Inject(HttpClient) private http: HttpClient) {
+    }
 
     /**
      * @param data {string}
@@ -49,20 +51,28 @@ export class EncryptionService {
         return new Promise<{encrypt: CryptoFunction; decrypt: CryptoFunction}>((resolve, reject) => {
             // @ts-ignore
             const go = new Go();
-            WebAssembly.instantiateStreaming(
-                fetch('assets/wasm/encryption.wasm'),
-                go.importObject
-            ).then((res) => {
-                go.run(res.instance);
+            this.http
+                .get(
+                    'assets/wasm/gcm-encryption.wasm',
+                    {
+                        responseType: "arraybuffer",
+                    }
+                ).subscribe((value: ArrayBuffer) => {
+                    WebAssembly.instantiate(
+                        value,
+                        go.importObject
+                    ).then((res) => {
+                        go.run(res.instance);
 
-                // Resolve into a object with exported functions mounted.
-                resolve({
-                    // @ts-ignore "GoGCMEncrypt" is what is exported from "encryption.wasm"
-                    encrypt: GoGCMEncrypt as CryptoFunction,
-                    // @ts-ignore "GoGCMDecrypt" is what is exported from "encryption.wasm"
-                    decrypt: GoGCMDecrypt as CryptoFunction,
-                });
-            });
+                        // Resolve into a object with exported functions mounted.
+                        resolve({
+                            // @ts-ignore "GoGCMEncrypt" is what is exported from "encryption.wasm"
+                            encrypt: GoGCMEncrypt as CryptoFunction,
+                            // @ts-ignore "GoGCMDecrypt" is what is exported from "encryption.wasm"
+                            decrypt: GoGCMDecrypt as CryptoFunction,
+                        });
+                    })
+            })
         })
     }
 }
