@@ -24,11 +24,8 @@
             "dom"
         ],
         "paths": {
-            "@components/*": [
-                "./src/shared/components/*"
-            ],
-            "@services/*": [
-                "./src/services/*"
+            "@pages/*": [
+                "./src/pages/*"
             ]
         }
     },

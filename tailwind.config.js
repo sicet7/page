@@ -3,7 +3,6 @@ module.exports = {
     darkMode: 'class',
     content: [
         './src/**/*.{html,ts}',
-        'node_modules/preline/dist/*.js',
     ],
     theme: {
         extend: {},

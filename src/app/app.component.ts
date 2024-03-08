@@ -1,12 +1,13 @@
 import {Component, Inject} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 import {GcmEncryptionModule} from "../modules/gcm-encryption/gcm-encryption.module";
 import {GcmEncryptionService} from "../modules/gcm-encryption/services/gcm-encryption.service";
+import {NavigationComponent} from "./navigation/navigation.component";
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet, GcmEncryptionModule],
+    imports: [RouterOutlet, GcmEncryptionModule, RouterLink, NavigationComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.less'
 })

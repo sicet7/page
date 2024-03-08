@@ -34,8 +34,7 @@
                             "src/styles.less"
                         ],
                         "scripts": [
-                            "wasm_exec.js",
-                            "node_modules/preline/preline.js"
+                            "wasm_exec.js"
                         ]
                     },
                     "configurations": {
