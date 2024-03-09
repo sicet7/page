@@ -1,6 +1,7 @@
 import {Routes} from "@angular/router";
 import {ToolsComponent} from "./tools.component";
 import {ListComponent} from "@pages/tools/list/list.component";
+import {UuidComponent} from "@pages/tools/tools/uuid/uuid.component";
 
 export const routes: Routes = [
     {
@@ -12,9 +13,9 @@ export const routes: Routes = [
                 component: ListComponent,
             },
             {
-                path: 'encryption',
-                loadComponent: () => import('@pages/tools/tools/encryption/encryption.component')
-                    .then(x => x.EncryptionComponent),
+                path: 'uuid',
+                loadComponent: () => import('@pages/tools/tools/uuid/uuid.component')
+                    .then(x => x.UuidComponent),
             }
         ]
     },

@@ -3,3 +3,10 @@
         Tools
     </h2>
 </div>
+<div class="text-start grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 xl:gap-6">
+    @for (item of this.items; track $index) {
+        <app-list-item [title]="item.title" [description]="item.description" [link]="item.link">
+            <fa-icon [icon]="item.icon" [size]="'3x'"/>
+        </app-list-item>
+    }
+</div>
