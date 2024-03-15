@@ -30,4 +30,4 @@ jobs:
                     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                     projectName: page
                     directory: ./dist/sicet7/browser
-                    gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+                    wranglerVersion: '3'
