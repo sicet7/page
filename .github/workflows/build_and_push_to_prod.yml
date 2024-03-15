@@ -1,0 +1,33 @@
+name: "Build and Push to Production"
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build_and_push:
+        name: "Build and push to Production"
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout Repository
+                uses: actions/checkout@v4
+            -   name: Setup Node
+                uses: actions/setup-node@v4
+                with:
+                    node-version: 20
+            -   name: Setup Go
+                uses: actions/setup-go@v5
+                with:
+                    go-version: '1.21.x'
+            -   name: Build Project
+                run: bash ./build.sh
+
+            -   name: Publish Project
+                uses: cloudflare/pages-action@v1
+                with:
+                    apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                    accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                    projectName: page
+                    directory: ./dist/sicet7/browser
+                    gitHubToken: ${{ secrets.GITHUB_TOKEN }}
