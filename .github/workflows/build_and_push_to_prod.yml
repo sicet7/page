@@ -23,11 +23,9 @@ jobs:
             -   name: Build Project
                 run: bash ./build.sh
 
-            -   name: Publish Project
-                uses: cloudflare/pages-action@v1
+            -   name: List Projects Project
+                uses: cloudflare/wrangler-action@v3
                 with:
                     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-                    projectName: page
-                    directory: ./dist/sicet7/browser
-                    wranglerVersion: '3'
+                    command: pages project list
