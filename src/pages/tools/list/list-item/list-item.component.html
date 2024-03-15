@@ -1,0 +1,9 @@
+<a [routerLink]="this.link" class="relative rounded-xl before:absolute before:inset-0 before:z-10 before:border before:border-gray-200 before:rounded-xl before:transition before:hover:border-2 before:hover:border-blue-600 before:hover:shadow-lg dark:before:border-gray-700 dark:before:hover:border-blue-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+    <div class="relative min-h-[150px] flex justify-center items-center">
+        <ng-content/>
+    </div>
+    <div class="py-3.5 px-4 rounded-b-xl border-t border-t-gray-200 dark:border-t-gray-700">
+        <h3 class="text-sm text-gray-900 font-medium dark:text-white">{{ this.title }}</h3>
+        <p class="mt-0.5 text-sm text-gray-400 dark:text-gray-500">{{ this.description }}</p>
+    </div>
+</a>
