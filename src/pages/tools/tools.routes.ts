@@ -21,6 +21,11 @@ export const routes: Routes = [
                 path: 'gcm-encrypt',
                 loadComponent: () => import('@pages/tools/tools/gcm-encrypt/gcm-encrypt.component')
                     .then(x => x.GcmEncryptComponent)
+            },
+            {
+                path: 'bcrypt',
+                loadComponent: () => import('@pages/tools/tools/bcrypt/bcrypt.component')
+                    .then(x => x.BcryptComponent)
             }
         ]
     },

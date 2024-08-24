@@ -1,0 +1,4 @@
+github.com/sicet7/go-modules/hashing/bcrypt v0.0.0-20240824171130-6d1fd72e8cee h1:FFjml0qVVn8Jp0+1ftAjc/ElwB4wlchpF1QAPe+uMlI=
+github.com/sicet7/go-modules/hashing/bcrypt v0.0.0-20240824171130-6d1fd72e8cee/go.mod h1:OUD5PQMV0ra1aw/0kGexsemQNS04wlBQfvQHdyTzGpE=
+golang.org/x/crypto v0.26.0 h1:RrRspgV4mU+YwB4FYnuBoKsUapNIL5cohGAmSH3azsw=
+golang.org/x/crypto v0.26.0/go.mod h1:GY7jblb9wI+FOo5y8/S2oY4zWP07AkOJ4+jxCqdqn54=

@@ -1,10 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgClass} from "@angular/common";
-import { Mode } from './mode.enum';
+import {Mode} from './mode.enum';
 import {SubscriptionHandler} from "@src/abstracts/subscription-handler";
 import {GcmEncryptionService} from "@src/modules/gcm-encryption/services/gcm-encryption.service";
 import {WINDOW} from "@src/window";
+import {getAllFormErrors} from "@src/helpers/form.helpers";
+import {Algo, shaHash} from "@src/helpers/window.helpers";
 
 @Component({
     selector: 'app-gcm-encrypt',
@@ -69,12 +71,16 @@ export class GcmEncryptComponent extends SubscriptionHandler implements OnInit {
 
         localStorage.setItem(this._key, e.password);
 
-        const input = await this.digestMessage(`${e.wasm ? 1 : 0}-${mode}-${e.password}-${e.input}`);
+        const input = await shaHash(
+            Algo.SHA256,
+            this.window,
+            `${e.wasm ? 1 : 0}-${mode}-${e.password}-${e.input}`
+        )
 
         //To update UI.
         this.currentMode = mode;
 
-        const errors = this.getAllFormErrors();
+        const errors = getAllFormErrors(this.form);
         const isReady = errors.filter(v => v.controlName !== 'currentInput' && v.controlName !== 'output').length === 0;
 
         if (isReady && e.currentInput === input) {
@@ -131,32 +137,6 @@ export class GcmEncryptComponent extends SubscriptionHandler implements OnInit {
         })
     }
 
-    protected getAllFormErrors(group: FormGroup|null = null): ValidationError[] {
-        let errors: ValidationError[] = [];
-        if (group === null) {
-            group = this.form;
-        }
-        for(const controlName of Object.keys(group.controls)) {
-            const control = group.controls[controlName];
-            if (control instanceof FormGroup) {
-                errors.push(...this.getAllFormErrors(control));
-                continue;
-            }
-            if (control.errors === null) {
-                continue;
-            }
-            for(const errorKey of Object.keys(control.errors)) {
-                const error = control.errors[errorKey];
-                errors.push({
-                    errorKey: errorKey,
-                    controlName: controlName,
-                    errorValue: error,
-                })
-            }
-        }
-        return errors;
-    }
-
     private setPassword(value: string): void {
         this.form.patchValue({
             password: value
@@ -167,11 +147,4 @@ export class GcmEncryptComponent extends SubscriptionHandler implements OnInit {
         return Array.from(window.crypto.getRandomValues(new Uint8Array(Math.ceil(32 / 2))))
             .map(dec => dec.toString(16).padStart(2, "0")).join("").substring(0, 32)
     }
-}
-
-
-interface ValidationError {
-    controlName: string;
-    errorKey: string;
-    errorValue: any;
 }

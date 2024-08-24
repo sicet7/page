@@ -2,23 +2,11 @@ package main
 
 import (
 	"fmt"
-	gcmEncryption "github.com/sicet7/go-modules/encryption/gcm"
+	"github.com/sicet7/go-modules/hashing/bcrypt"
 	"syscall/js"
 )
 
-func encrypt(data string, password string) (string, error) {
-	return gcmEncryption.EncryptString([]byte(data), []byte(password))
-}
-
-func decrypt(data string, password string) (string, error) {
-	bytes, err2 := gcmEncryption.DecryptString(data, []byte(password))
-	if err2 != nil {
-		return "", err2
-	}
-	return string(bytes), nil
-}
-
-func jsEncrypt() js.Func {
+func jsBcryptCreate() js.Func {
 	return js.FuncOf(func(this js.Value, args1 []js.Value) any {
 		return js.Global().Get("Promise").New(js.FuncOf(func(this js.Value, args2 []js.Value) interface{} {
 			resolve := args2[0]
@@ -26,27 +14,27 @@ func jsEncrypt() js.Func {
 			if len(args1) != 2 {
 				reject.Invoke("Invalid no of arguments passed")
 			}
-			data := args1[0].String()
-			password := args1[1].String()
+			password := args1[0].String()
+			cost := args1[1].Int()
 			go func() {
 				defer func() {
 					if r := recover(); r != nil {
-						reject.Invoke(fmt.Sprintf("unable to encrypt %s", r))
+						reject.Invoke(fmt.Sprintf("unable to create hash %s", r))
 					}
 				}()
-				cipherText, err := encrypt(data, password)
+				hash, err := bcrypt.FromPassword(password, cost)
 				if err != nil {
-					reject.Invoke(fmt.Sprintf("unable to encrypt %s", err))
+					reject.Invoke(fmt.Sprintf("unable to create hash %s", err))
 					return
 				}
-				resolve.Invoke(cipherText)
+				resolve.Invoke(hash.String())
 			}()
 			return nil
 		}))
 	})
 }
 
-func jsDecrypt() js.Func {
+func jsBcryptVerify() js.Func {
 	return js.FuncOf(func(this js.Value, args1 []js.Value) any {
 		return js.Global().Get("Promise").New(js.FuncOf(func(this js.Value, args2 []js.Value) interface{} {
 			resolve := args2[0]
@@ -54,7 +42,7 @@ func jsDecrypt() js.Func {
 			if len(args1) != 2 {
 				reject.Invoke("Invalid no of arguments passed")
 			}
-			data := args1[0].String()
+			hashString := args1[0].String()
 			password := args1[1].String()
 			go func() {
 				defer func() {
@@ -62,12 +50,12 @@ func jsDecrypt() js.Func {
 						reject.Invoke(fmt.Sprintf("unable to decrypt %s", r))
 					}
 				}()
-				cipherText, err := decrypt(data, password)
+				hash, err := bcrypt.FromHash(hashString)
 				if err != nil {
 					reject.Invoke(fmt.Sprintf("unable to decrypt %s", err))
 					return
 				}
-				resolve.Invoke(cipherText)
+				resolve.Invoke(hash.VerifyPassword(password))
 			}()
 			return nil
 		}))
@@ -75,9 +63,9 @@ func jsDecrypt() js.Func {
 }
 
 func main() {
-	js.Global().Set("GoGCMEncrypt", jsEncrypt())
-	fmt.Println("GoGCMEncrypt loaded.")
-	js.Global().Set("GoGCMDecrypt", jsDecrypt())
-	fmt.Println("GoGCMDecrypt loaded.")
+	js.Global().Set("GoBcryptHash", jsBcryptCreate())
+	fmt.Println("GoBcryptHash loaded.")
+	js.Global().Set("GoBcryptHashVerify", jsBcryptVerify())
+	fmt.Println("GoBcryptHashVerify loaded.")
 	<-make(chan struct{})
 }

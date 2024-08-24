@@ -32,7 +32,7 @@ export class GcmEncryptionService {
         if (typeof this.suite?.decrypt !== 'function') {
             throw new Error('Load failed')
         }
-        return await this.suite.decrypt(this.fixPadding(this.toUrlSafe(data)), password);
+        return this.suite!.decrypt(this.fixPadding(this.toUrlSafe(data)), password);
     }
 
     /**

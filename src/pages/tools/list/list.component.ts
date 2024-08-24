@@ -34,6 +34,12 @@ export class ListComponent {
             description: 'Encrypts and Decrypts strings with AES256-GCM',
             link: '/tools/gcm-encrypt',
             icon: faGear,
+        },
+        {
+            title: 'Bcrypt Hashing',
+            description: 'Generates and verifies Bcrypt hashes',
+            link: '/tools/bcrypt',
+            icon: faGear,
         }
     ];
 }

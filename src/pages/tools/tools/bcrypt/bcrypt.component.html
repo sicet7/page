@@ -1,0 +1,69 @@
+<div class="flex justify-center pb-10">
+    <h1 class="text-5xl">Bcrypt Hash/Verify</h1>
+</div>
+<form [formGroup]="form">
+    <div class="flex justify-center">
+        <div class="w-[400px]">
+            <div class="flex justify-center py-3">
+                <p class="w-[200px] text-center py-2 cursor-pointer select-none border" (click)="setMode(Mode.Hash)" [ngClass]="{'rounded-md': this.currentMode === Mode.Hash, 'border-transparent': this.currentMode !== Mode.Hash}">Hash</p>
+                <p class="w-[200px] text-center py-2 cursor-pointer select-none border" (click)="setMode(Mode.Verify)" [ngClass]="{'rounded-md': this.currentMode === Mode.Verify, 'border-transparent': this.currentMode !== Mode.Verify}">Verify</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="flex justify-center">
+        <div class="grid grid-cols-3 pb-3">
+            <div class="flex justify-end items-center">
+                <label for="password" class="pr-3">Password:</label>
+            </div>
+            <div class="w-[400px]">
+                <input type="text" class="bg-transparent w-full rounded focus:ring-0" id="password" formControlName="password"/>
+            </div>
+        </div>
+    </div>
+
+    @if (this.currentMode === Mode.Hash) {
+        <div class="flex justify-center">
+            <div class="grid grid-cols-3">
+                <div class="flex justify-end items-center">
+                    <label for="cost" class="pr-3">Cost:</label>
+                </div>
+                <div class="w-[400px]">
+                    <input type="number" min="6" max="20" id="cost" class="bg-transparent w-full rounded focus:ring-0" formControlName="cost"/>
+                </div>
+            </div>
+        </div>
+    } @else if (this.currentMode === Mode.Verify) {
+        <div class="flex justify-center">
+            <div class="grid grid-cols-3">
+                <div class="flex justify-end items-center">
+                    <label for="hash" class="pr-3">Hash:</label>
+                </div>
+                <div class="w-[400px]">
+                    <input type="text" class="bg-transparent w-full rounded focus:ring-0" id="hash" formControlName="hash"/>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="flex justify-center">
+        <div class="w-[400px] py-6">
+            <button class="w-full border-white border rounded py-3 cursor-pointer" (click)="this.execute()">{{ this.currentMode === Mode.Hash ? 'Hash' : 'Verify' }}</button>
+        </div>
+    </div>
+
+    @if (this.output.valid) {
+        <div class="flex justify-center">
+            <div class="grid grid-cols-3 pt-3">
+                <div class="flex justify-end items-center">
+                    <label for="output" class="pr-3">Output:</label>
+                </div>
+                <div class="w-[400px]">
+                    <textarea readonly class="w-full bg-transparent rounded focus:ring-0 resize-y min-h-[200px]" [formControl]="this.output" id="output"></textarea>
+                </div>
+            </div>
+        </div>
+    }
+
+</form>
