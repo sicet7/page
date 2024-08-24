@@ -1,30 +1,17 @@
 package main
 
 import (
-	"fmt"
-	gcmEncryption "github.com/sicet7/go-modules/encryption/gcm"
-	"github.com/sicet7/go-modules/rand"
-	"syscall/js"
+    "fmt"
+    gcmEncryption "github.com/sicet7/go-modules/encryption/gcm"
+    "syscall/js"
 )
 
 func encrypt(data string, password string) (string, error) {
-	keyString, err := rand.GetSeededRandomString(password, 32)
-	if err != nil {
-		return "", err
-	}
-	key := []byte(keyString)
-
-	return gcmEncryption.EncryptString([]byte(data), key)
+	return gcmEncryption.EncryptString([]byte(data), []byte(password))
 }
 
 func decrypt(data string, password string) (string, error) {
-	keyString, err1 := rand.GetSeededRandomString(password, 32)
-	if err1 != nil {
-		return "", err1
-	}
-	key := []byte(keyString)
-
-	bytes, err2 := gcmEncryption.DecryptString(data, key)
+	bytes, err2 := gcmEncryption.DecryptString(data, []byte(password))
 	if err2 != nil {
 		return "", err2
 	}
@@ -42,6 +29,11 @@ func jsEncrypt() js.Func {
 			data := args1[0].String()
 			password := args1[1].String()
 			go func() {
+				defer func() {
+					if r := recover(); r != nil {
+						reject.Invoke(fmt.Sprintf("unable to encrypt %s", r))
+					}
+				}()
 				cipherText, err := encrypt(data, password)
 				if err != nil {
 					reject.Invoke(fmt.Sprintf("unable to encrypt %s", err))
@@ -65,6 +57,11 @@ func jsDecrypt() js.Func {
 			data := args1[0].String()
 			password := args1[1].String()
 			go func() {
+				defer func() {
+					if r := recover(); r != nil {
+						reject.Invoke(fmt.Sprintf("unable to decrypt %s", r))
+					}
+				}()
 				cipherText, err := decrypt(data, password)
 				if err != nil {
 					reject.Invoke(fmt.Sprintf("unable to decrypt %s", err))

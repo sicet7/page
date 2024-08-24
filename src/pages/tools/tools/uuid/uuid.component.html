@@ -1,1 +1,19 @@
-<p>uuid works!!</p>
+<div class="flex justify-center pb-5">
+    <h1 class="text-6xl">UUID's</h1>
+</div>
+<div class="flex justify-center">
+    <button type="button" (click)="push()" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+        Push
+    </button>
+</div>
+<div class="flex justify-center">
+    <div class="flex flex-col items-center">
+        @for (item of stack; track item; let i = $index) {
+            @if (i === 0) {
+                <input class="font-bold text-4xl cursor-pointer bg-transparent select-none border-none outline-none shadow-none w-[820px] text-center focus:ring-0 focus:ring-offset-0" #ref (click)="copyUuid(ref)" value="{{ item }}" readonly/>
+            } @else {
+                <input class="font-bold text-2xl cursor-pointer bg-transparent select-none border-none outline-none shadow-none w-[560px] text-center focus:ring-0 focus:ring-offset-0" #ref2 (click)="copyUuid(ref2)" value="{{ item }}" readonly/>
+            }
+        }
+    </div>
+</div>

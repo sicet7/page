@@ -1,10 +1,10 @@
-<header id="header" class="container-fluid bg-white dark:bg-gray-800 dark:text-white">
+<header id="header" #header class="container-fluid bg-white dark:bg-gray-800 dark:text-white">
     <app-navigation/>
 </header>
-<main id="content" role="main" class="container-fluid bg-white dark:bg-gray-800 dark:text-white min-h-[80vh]">
+<main id="content" role="main" class="container-fluid bg-white dark:bg-gray-800 dark:text-white" [style.min-height.px]="this.mainMinHeight()">
     <router-outlet />
 </main>
-<footer id="footer" class="container-fluid bg-white dark:bg-gray-800 dark:text-white w-full py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+<footer id="footer" #footer class="container-fluid bg-white dark:bg-gray-800 dark:text-white w-full py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <div class="pt-5 mt-5 border-t border-gray-200 dark:border-gray-700">
         <div class="sm:flex sm:justify-end sm:items-center">
             <div class="flex justify-between items-center">

@@ -24,6 +24,9 @@
             "dom"
         ],
         "paths": {
+            "@src/*" : [
+                "./src/*"
+            ],
             "@pages/*": [
                 "./src/pages/*"
             ]

@@ -28,6 +28,12 @@ export class ListComponent {
             description: 'Generates UUID\'s',
             link: '/tools/uuid',
             icon: faGear,
+        },
+        {
+            title: 'GCM Encrypt/Decrypt',
+            description: 'Encrypts and Decrypts strings with AES256-GCM',
+            link: '/tools/gcm-encrypt',
+            icon: faGear,
         }
     ];
 }

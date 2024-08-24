@@ -1,0 +1,49 @@
+<div class="flex justify-center pb-10">
+    <h1 class="text-5xl">GCM Encrypt/Decrypt</h1>
+</div>
+<form [formGroup]="form">
+    <div class="flex justify-center">
+        <div class="grid grid-cols-3">
+            <div class="flex flex-col justify-center pr-3">
+                <label for="crypto_password" class="w-full text-right">Password:</label>
+            </div>
+            <input type="text" id="crypto_password" class="bg-transparent w-[400px] rounded" formControlName="password" maxlength="32"/>
+            <div class="flex flex-col justify-center pl-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" (click)="setRandomPassword()" width="30px" height="30px" class="cursor-pointer select-none">
+                    <path class="stroke-2  stroke-white fill-none" style="stroke-linecap:round;stroke-miterlimit:10;"
+                          d="M22.143,23.365C20.221,25.008,17.726,26,15,26C8.925,26,4,21.075,4,15"/>
+                    <path class="stroke-2 stroke-white fill-none" style="stroke-linecap:round;stroke-miterlimit:10;"
+                          d="M7.857,6.635C9.779,4.992,12.274,4,15,4c6.075,0,11,4.925,11,11"/>
+                    <polygon class="stroke-white fill-white" points="26,20 22,14 30,14"/>
+                    <polygon class="stroke-white fill-white" points="4,10 8,16 0,16"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <div class="grid grid-cols-3">
+            <div class="flex justify-end items-center pr-3">
+                <label for="wasm-module-enable" class="pr-1 text-sm ms-3">WASM Module</label>
+                <input type="checkbox" class="shrink-0 mt-0.5 rounded bg-transparent border-white cursor-pointer" formControlName="wasm" id="wasm-module-enable">
+            </div>
+            <div class="w-[400px]">
+                <div class="flex justify-center py-3">
+                    <p class="w-[200px] text-center py-2 cursor-pointer select-none border" (click)="setMode(Mode.Encrypt)" [ngClass]="{'rounded-md': this.currentMode === Mode.Encrypt, 'border-transparent': this.currentMode !== Mode.Encrypt}">Encrypt</p>
+                    <p class="w-[200px] text-center py-2 cursor-pointer select-none border" (click)="setMode(Mode.Decrypt)" [ngClass]="{'rounded-md': this.currentMode === Mode.Decrypt, 'border-transparent': this.currentMode !== Mode.Decrypt}">Decrypt</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center p-3">
+        <div class="flex flex-col">
+            <label for="input" class="pl-3 select-none">Input: </label>
+            <textarea class="bg-transparent m-3 resize-y min-h-[200px] w-[800px] rounded" id="input" formControlName="input"></textarea>
+        </div>
+        <div class="flex flex-col">
+            <label for="output" class="pl-3 select-none">Output: </label>
+            <textarea class="bg-transparent m-3 resize-y min-h-[200px] w-[800px] rounded" id="output" readonly formControlName="output"></textarea>
+        </div>
+    </div>
+</form>

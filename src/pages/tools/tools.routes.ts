@@ -16,6 +16,11 @@ export const routes: Routes = [
                 path: 'uuid',
                 loadComponent: () => import('@pages/tools/tools/uuid/uuid.component')
                     .then(x => x.UuidComponent),
+            },
+            {
+                path: 'gcm-encrypt',
+                loadComponent: () => import('@pages/tools/tools/gcm-encrypt/gcm-encrypt.component')
+                    .then(x => x.GcmEncryptComponent)
             }
         ]
     },
